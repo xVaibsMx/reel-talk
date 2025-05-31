@@ -1,0 +1,20 @@
+<svg width="300" height="100" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .text { font-family: 'Segoe UI', sans-serif; font-weight: 600; font-size: 60px; fill: #FF7F00; }
+    .subtext { font-family: 'Segoe UI', sans-serif; font-size: 20px; fill: #CCCCCC; }
+    .reel { fill: #2D2D2D; stroke: #FF7F00; stroke-width: 4; }
+    .dot { fill: #FF7F00; }
+  </style>
+
+  <!-- Film Reel Icon -->
+  <circle class="reel" cx="80" cy="100" r="50" />
+  <circle class="dot" cx="60" cy="85" r="7" />
+  <circle class="dot" cx="100" cy="85" r="7" />
+  <circle class="dot" cx="60" cy="115" r="7" />
+  <circle class="dot" cx="100" cy="115" r="7" />
+  <circle class="dot" cx="80" cy="100" r="5" />
+
+  <!-- Brand Text -->
+  <text class="text" x="160" y="115">REEL TALK</text>
+  <text class="subtext" x="162" y="145">movie reviews reimagined</text>
+</svg>

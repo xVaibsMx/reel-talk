@@ -1,7 +1,36 @@
 import React from "react";
+import Logo from "../assets/Logo.svg";
+import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
-  return <div>NavBar</div>;
+  const navigate = useNavigate();
+  return (
+    <nav className=" flex items-center justify-between px-6">
+      {/* Logo */}
+      <img src={Logo} alt="Reel Talk Logo" className=" w-auto" />
+      {/* NavLinks */}
+      <ul className=" flex gap-5 text-lg font-mono">
+        <li className=" hover:text-amber-50 transition  duration-150 ease-in">
+          About
+        </li>
+        <li className="hover:text-amber-50 transition  duration-150 ease-in">
+          Movies
+        </li>
+        <li className=" hover:text-amber-50 transition duration-150 ease-in">
+          Reviews
+        </li>
+      </ul>
+      {/* Buttons */}
+      <div className=" flex gap-3">
+        <button className=" bg-gray-950 text-orange-500 w-36 py-2 border-2 border-orange-500 rounded-3xl hover:bg-orange-400 hover:text-white hover:border-white transition-all duration-200 ease-in font-mono">
+          Register
+        </button>
+        <button className=" bg-gray-950 text-orange-500 w-36 py-2 border-2 border-orange-500 rounded-3xl hover:bg-orange-400 hover:text-white hover:border-white transition-all duration-200 ease-in font-mono">
+          Login
+        </button>
+      </div>
+    </nav>
+  );
 };
 
 export default NavBar;
