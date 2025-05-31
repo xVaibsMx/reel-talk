@@ -41,7 +41,7 @@ const FeaturedMovies = () => {
               <img
                 src={`${IMG_BASE_URL}${movie.poster_path}`}
                 alt={movie.title}
-                className="h-96 w-full object-fit rounded-xl mb-4"
+                className="h-96 w-full object-fit rounded-xl "
               />
               <p className="text-white text-lg font-semibold">
                 Movie: {movie.title}
