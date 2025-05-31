@@ -1,9 +1,24 @@
 <svg width="300" height="100" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
   <style>
-    .text { font-family: 'Segoe UI', sans-serif; font-weight: 600; font-size: 60px; fill: #FF7F00; }
-    .subtext { font-family: 'Segoe UI', sans-serif; font-size: 20px; fill: #CCCCCC; }
-    .reel { fill: #2D2D2D; stroke: #FF7F00; stroke-width: 4; }
-    .dot { fill: #FF7F00; }
+    .text {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 60px;
+      fill: #F97316;
+    }
+    .subtext {
+      font-family: 'Inter', sans-serif;
+      font-size: 20px;
+      fill: #CCCCCC;
+    }
+    .reel {
+      fill: #2D2D2D;
+      stroke: #F97316;
+      stroke-width: 4;
+    }
+    .dot {
+      fill: #F97316;
+    }
   </style>
 
   <!-- Film Reel Icon -->

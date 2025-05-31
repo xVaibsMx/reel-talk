@@ -10,13 +10,13 @@ const NavBar = () => {
       <img src={Logo} alt="Reel Talk Logo" className=" w-auto" />
       {/* NavLinks */}
       <ul className=" flex gap-5 text-lg font-mono">
-        <li className=" hover:text-amber-50 transition  duration-150 ease-in">
+        <li className=" hover:text-amber-50 transition-all  duration-100 ease-in hover:scale-105">
           About
         </li>
-        <li className="hover:text-amber-50 transition  duration-150 ease-in">
+        <li className="hover:text-amber-50 transition  duration-100 ease-in hover:scale-105">
           Movies
         </li>
-        <li className=" hover:text-amber-50 transition duration-150 ease-in">
+        <li className=" hover:text-amber-50 transition duration-100 ease-in hover:scale-105">
           Reviews
         </li>
       </ul>
