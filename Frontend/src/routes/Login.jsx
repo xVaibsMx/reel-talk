@@ -9,18 +9,11 @@ const Login = () => {
         <h2 className=" text-2xl text-white mb-10">
           Register for a free account.
         </h2>
-        <div className=" flex gap-3 ">
-          <input
-            type="text"
-            placeholder="FirstName"
-            className=" w-[200px] rounded-lg text-gray-800 px-1 bg-gray-700 py-3"
-          />
-          <input
-            type="text"
-            placeholder="LastName"
-            className=" w-[200px] rounded-lg text-gray-800 px-1 bg-gray-700 py-3"
-          />
-        </div>
+        <input
+          type="text"
+          className="rounded-lg text-gray-800  bg-gray-700 w-[410px] px-1  py-3"
+          placeholder="Username"
+        />
 
         <input
           type="text"
