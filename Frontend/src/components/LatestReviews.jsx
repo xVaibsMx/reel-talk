@@ -24,12 +24,14 @@ const LatestReviews = () => {
         {reviews.map((review) => (
           <SwiperSlide key={review.id}>
             <div className=" p-4  rounded-lg shadow-md bg-gray-700 border-2 border-orange-500 h-80">
-              <h2 className="text-xl font-semibold">{review.movieTitle}</h2>
-              <p className="text-sm  mb-2">
+              <h2 className="text-2xl font-semibold">{review.movieTitle}</h2>
+              <p className="text-sm  mb-2 text-orange-300 font-mono">
                 Reviewed by <strong>{review.reviewer}</strong> on {review.date}
               </p>
-              <p className="mb-2">Rating: ⭐ {review.rating.toFixed(1)}</p>
-              <p className=" text-amber-50">{review.review}</p>
+              <p className="mb-2 text-orange-300 font-mono">
+                Rating: ⭐ {review.rating.toFixed(1)}
+              </p>
+              <p className=" text-amber-50 font-mono">{review.review}</p>
             </div>
           </SwiperSlide>
         ))}
