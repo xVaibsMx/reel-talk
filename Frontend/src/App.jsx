@@ -6,6 +6,7 @@ import Login from "./routes/Login";
 import NavBar from "./components/NavBar";
 import Movies from "./routes/Movies";
 import Reviews from "./routes/Reviews";
+import SearchResults from "./routes/SearchResults";
 function App() {
   return (
     <div className=" bg-gray-900 min-h-screen text-orange-500">
@@ -17,6 +18,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/movies" element={<Movies />} />
           <Route path="/reviews" element={<Reviews />} />
+          <Route path="/search" element={<SearchResults />} />
         </Routes>
       </Router>
     </div>
