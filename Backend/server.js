@@ -81,6 +81,30 @@ app.post("/register", async (req, res) => {
   }
 });
 
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+  const userCheck = await Users.findOne({ username, password });
+  if (userCheck) {
+    const token = jwt.sign({ username }, Secret);
+    return res
+      .status(201)
+      .send({ message: "User logged in successfully!!", token: token });
+  } else {
+    return res
+      .status(409)
+      .send({ message: "Incorrect username or password!!" });
+  }
+});
+
+app.get("/me", authJwt, (req, res) => {
+  const user = req.user;
+  console.log(user);
+
+  res.status(200).send({
+    message: "User data fetched successfully",
+    user: user,
+  });
+});
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

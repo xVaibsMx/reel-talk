@@ -24,6 +24,7 @@ const Register = () => {
       })
       .then((data) => {
         alert(data.message);
+        localStorage.setItem("token", data.token);
       });
   };
   return (
