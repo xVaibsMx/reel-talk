@@ -7,11 +7,6 @@ const Hero = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
 
-  const handleSearch = () => {
-    if (query.trim()) {
-      navigate(`/search?query=${encodeURIComponent(query.trim())}`);
-    }
-  };
   return (
     <section className="h-[80vh] w-full relative overflow-hidden">
       {/* Hero Image */}
@@ -52,10 +47,7 @@ const Hero = () => {
               }}
               className="w-full pr-16 pl-6 py-4 rounded-full bg-gray-950 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 transition duration-150 ease-in text-lg"
             />
-            <button
-              className="absolute right-4 top-1/2 -translate-y-1/2"
-              onClick={handleSearch}
-            >
+            <button className="absolute right-4 top-1/2 -translate-y-1/2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-7 w-7 text-gray-400 hover:bg-orange-500 hover:text-white rounded-full p-1.5 transition duration-200 ease-in-out"

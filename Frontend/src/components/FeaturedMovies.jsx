@@ -19,7 +19,6 @@ const FeaturedMovies = () => {
       })
       .then((data) => {
         setMovies(data.results);
-        console.log(data.results);
       });
   }, []);
   return (
