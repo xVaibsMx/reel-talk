@@ -98,11 +98,10 @@ app.post("/login", async (req, res) => {
 
 app.get("/me", authJwt, (req, res) => {
   const user = req.user;
-  console.log(user);
 
   res.status(200).send({
     message: "User data fetched successfully",
-    user: user,
+    user: user.username,
   });
 });
 app.listen(PORT, () => {

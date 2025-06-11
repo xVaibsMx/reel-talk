@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { data, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -25,6 +25,7 @@ const Register = () => {
       .then((data) => {
         alert(data.message);
         localStorage.setItem("token", data.token);
+        window.location = "/";
       });
   };
   return (
@@ -50,7 +51,7 @@ const Register = () => {
           }}
         />
         <input
-          type="text"
+          type="password"
           className="rounded-lg text-gray-800  bg-gray-700 w-[410px] px-1  py-3"
           placeholder="Password"
           onChange={(e) => {
