@@ -1,109 +1,146 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
-const cors = require("cors");
-const dotenv = require("dotenv");
+require('dotenv').config()
+const express = require('express')
+const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
+const cors = require('cors')
+const bcrypt = require('bcrypt')
+const helmet = require('helmet')
 
-dotenv.config(); // Load .env variables
+const app = express()
+const PORT = process.env.PORT || 3000
+const JWT_SECRET = process.env.SUPER_SECRET
+const SALT_ROUNDS = 10
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-const Secret = process.env.SUPER_SECRET;
-
-app.use(express.json());
-app.use(cors());
+app.use(helmet()) // Basic security headers
+app.use(cors())
+app.use(express.json())
 
 mongoose
   .connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("MongoDB connection error:", err));
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((err) => console.error('MongoDB connection error:', err))
 
-const userSchema = mongoose.Schema({
-  email: String,
-  username: String,
-  password: String,
-});
+const userSchema = new mongoose.Schema({
+  email: { type: String, required: true, unique: true, lowercase: true },
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+})
 
-const Users = mongoose.model("USERS", userSchema);
+const Users = mongoose.model('Users', userSchema)
 
+// Middleware to verify JWT token
 const authJwt = (req, res, next) => {
-  const authHeaders = req.headers.authorization;
+  const authHeader = req.headers.authorization
+  if (!authHeader)
+    return res.status(401).json({ message: 'Authorization header missing' })
 
-  if (!authHeaders) {
-    return res.status(401).json({ message: "Token not provided." });
-  }
+  const token = authHeader.split(' ')[1]
+  if (!token) return res.status(401).json({ message: 'Token missing' })
 
-  const token = authHeaders.split(" ")[1];
+  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+    if (err)
+      return res.status(401).json({ message: 'Invalid or expired token' })
 
-  jwt.verify(token, Secret, (err, user) => {
-    if (err) {
-      return res.status(401).json({ message: "Invalid or expired token." });
-    }
+    req.user = decoded // decoded contains username (payload)
+    next()
+  })
+}
 
-    req.user = user;
-    next();
-  });
-};
+// Register route
+app.post('/register', async (req, res) => {
+  const { username, email, password } = req.body
 
-app.post("/register", async (req, res) => {
-  const { username, password, email } = req.body;
-
-  if (!username || !password || !email) {
-    return res
-      .status(400)
-      .send({ message: "Please enter all the credentials!" });
+  // Basic input validation
+  if (!username || !email || !password) {
+    return res.status(400).json({ message: 'All fields are required' })
   }
 
   try {
-    const userExist = await Users.findOne({ username });
-
-    if (userExist) {
-      return res.status(409).send({ message: "Username already taken!" });
+    // Check if username or email exists
+    const existingUser = await Users.findOne({
+      $or: [{ username }, { email }],
+    })
+    if (existingUser) {
+      return res
+        .status(409)
+        .json({ message: 'Username or Email already taken' })
     }
 
-    const newUser = new Users({ username, password, email });
-    await newUser.save();
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS)
 
-    const token = jwt.sign({ username }, Secret, { expiresIn: "1h" });
+    const newUser = new Users({
+      username,
+      email,
+      password: hashedPassword,
+    })
+    await newUser.save()
 
-    return res.status(201).send({
-      message: "User created successfully!",
-      token: token,
-    });
+    // Generate JWT token (store only username or userId)
+    const token = jwt.sign({ username: newUser.username }, JWT_SECRET, {
+      expiresIn: '1h',
+    })
+
+    return res.status(201).json({
+      message: 'User created successfully',
+      token,
+    })
   } catch (error) {
-    console.error("Registration Error:", error);
-    return res
-      .status(500)
-      .send({ message: "Server error. Please try again later." });
+    console.error('Registration Error:', error)
+    return res.status(500).json({ message: 'Server error' })
   }
-});
+})
 
-app.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-  const userCheck = await Users.findOne({ username, password });
-  if (userCheck) {
-    const token = jwt.sign({ username }, Secret);
-    return res
-      .status(201)
-      .send({ message: "User logged in successfully!!", token: token });
-  } else {
-    return res
-      .status(409)
-      .send({ message: "Incorrect username or password!!" });
+// Login route
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body
+
+  if (!username || !password)
+    return res.status(400).json({ message: 'Username and password required' })
+
+  try {
+    const user = await Users.findOne({ username })
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials' })
+    }
+
+    const passwordMatch = await bcrypt.compare(password, user.password)
+    if (!passwordMatch) {
+      return res.status(401).json({ message: 'Invalid credentials' })
+    }
+
+    const token = jwt.sign({ username: user.username }, JWT_SECRET, {
+      expiresIn: '1h',
+    })
+
+    return res.json({ message: 'Login successful', token })
+  } catch (error) {
+    console.error('Login Error:', error)
+    return res.status(500).json({ message: 'Server error' })
   }
-});
+})
 
-app.get("/me", authJwt, (req, res) => {
-  const user = req.user;
+// Protected route to get user info
+app.get('/me', authJwt, async (req, res) => {
+  try {
+    // Find user details by username from token
+    const user = await Users.findOne(
+      { username: req.user.username },
+      { password: 0, _id: 0, __v: 0 }
+    )
 
-  res.status(200).send({
-    message: "User data fetched successfully",
-    user: user.username,
-  });
-});
+    if (!user) return res.status(404).json({ message: 'User not found' })
+
+    return res.json({ message: 'User data fetched successfully', user })
+  } catch (error) {
+    console.error('Fetch user error:', error)
+    return res.status(500).json({ message: 'Server error' })
+  }
+})
+
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+  console.log(`Server running on port ${PORT}`)
+})
