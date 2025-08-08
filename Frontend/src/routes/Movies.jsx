@@ -1,31 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+import React, { useEffect, useState } from 'react'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation, Pagination, Autoplay } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 
 const Movies = () => {
-  const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
-  const [trendingMovies, setTrendingMovies] = useState([]);
-  const [popularMovies, setPopularMovies] = useState([]);
-  const API_KEY = "10d83876919fd2325e0c543bd5cd7748";
+  const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500'
+  const [trendingMovies, setTrendingMovies] = useState([])
+  const [popularMovies, setPopularMovies] = useState([])
+  const API_KEY = '10d83876919fd2325e0c543bd5cd7748'
 
   useEffect(() => {
     fetch(
       `https://api.themoviedb.org/3/trending/movie/week?api_key=${API_KEY}&language=en-US`
     )
       .then((res) => res.json())
-      .then((data) => setTrendingMovies(data.results));
-  }, []);
+      .then((data) => setTrendingMovies(data.results))
+  }, [])
 
   useEffect(() => {
     fetch(
       `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=1`
     )
       .then((res) => res.json())
-      .then((data) => setPopularMovies(data.results));
-  }, []);
+      .then((data) => setPopularMovies(data.results))
+  }, [])
 
   return (
     <main className="px-6 py-4 space-y-12 text-white">
@@ -93,7 +93,7 @@ const Movies = () => {
         </Swiper>
       </section>
     </main>
-  );
-};
+  )
+}
 
-export default Movies;
+export default Movies
